@@ -67,34 +67,42 @@ namespace LinqExercise
 
             //TODO: Print all the employees' FullName properties to the console only if their FirstName starts with a C OR an S and order this in ascending order by FirstName.
             Console.WriteLine("\nPeople with FirstName starts with a C OR an S and in ascending order by FirstName.");
-            employees.Where(person => person.FirstName.ToLower().StartsWith("c") || person.FirstName.ToLower().StartsWith("s"))
-                .OrderBy(person => person.FirstName)
+            employees.Where(e => e.FirstName.ToLower().StartsWith("c") || e.FirstName.ToLower().StartsWith("s"))
+                .OrderBy(e => e.FirstName)
                 .ToList()
-                .ForEach(person => Console.WriteLine(person.FullName));
+                .ForEach(e => Console.WriteLine(e.FullName));
 
             //TODO: Print all the employees' FullName and Age who are over the age 26 to the console and order this by Age first and then by FirstName in the same result.
             Console.WriteLine("\nPeople who are over the age 26 and order this by Age first and then by FirstName");
-            employees.Where(person => person.Age > 26)
-                .OrderBy(person => person.Age)
-                .ThenBy(person => person.FirstName)
+            employees.Where(e => e.Age > 26)
+                .OrderBy(e => e.Age)
+                .ThenBy(e => e.FirstName)
                 .ToList()
-                .ForEach(person => Console.WriteLine($"Full Name: {person.FullName} | Age: {person.Age}"));
+                .ForEach(e => Console.WriteLine($"Full Name: {e.FullName} | Age: {e.Age}"));
 
             //TODO: Print the Sum of the employees' YearsOfExperience if their YOE is less than or equal to 10 AND Age is greater than 35.
             // Create a filtered list
-            var employeeFilteredListYOE = employees.Where(person => person.YearsOfExperience <= 10 && person.Age >= 35);
-
-            int sumOfYOE = employeeFilteredListYOE.Sum(person => person.YearsOfExperience);
+            int sumOfYOE = employees.Where(e => e.YearsOfExperience <= 10 && e.Age > 35)
+                .Sum(e => e.YearsOfExperience);
+            
             Console.WriteLine($"\nSum of the employees' YearsOfExperience if their YOE is less than or equal to 10 AND Age is greater than 35 equals {sumOfYOE}");
 
             //TODO: Now print the Average of the employees' YearsOfExperience if their YOE is less than or equal to 10 AND Age is greater than 35.
-            double averageYOE = Math.Round(employeeFilteredListYOE.Average(x => x.YearsOfExperience), 3);
-            Console.WriteLine($"Average of the employees' YearsOfExperience if their YOE is less than or equal to 10 AND Age is greater than 35 equals {averageYOE}");
+            double averageYOE = employees.Where(e => e.YearsOfExperience <= 10 && e.Age > 35)
+                .Average(e => e.YearsOfExperience);
+            
+            Console.WriteLine($"Average of the employees' YearsOfExperience if their YOE is less than or equal to 10 AND Age is greater than 35 equals {Math.Round(averageYOE, 3)}");
 
             //TODO: Add an employee to the end of the list without using employees.Add()
             Console.WriteLine("\nNew Employee List:");
             var newEmployeeList = employees.Append(new Employee { FirstName = "Elon", LastName = "Musk", Age = 52, YearsOfExperience = 25 });
             foreach (Employee e in newEmployeeList)
+            {
+                Console.WriteLine(e.FullName);
+            }
+
+            Console.WriteLine("\nOriginal List:");
+            foreach (Employee e in employees)
             {
                 Console.WriteLine(e.FullName);
             }
